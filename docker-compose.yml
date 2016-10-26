@@ -1,0 +1,33 @@
+# Web node
+web:
+  extends:
+    file: .drude/drude-services.yml
+    service: web
+  links:
+    - cli
+  environment:
+    - DOMAIN_NAME=web.drupal8.docker
+    - VIRTUAL_HOST=localhost
+  ports:
+   - "777:80"
+
+# CLI node
+cli:
+  extends:
+    file: .drude/drude-services.yml
+    service: cli
+  links:
+    - db
+  environment:
+    - DOMAIN_NAME=cli.drupal8.docker
+
+# DB node
+db:
+  extends:
+    file: .drude/drude-services.yml
+    service: db
+  environment:
+    - DOMAIN_NAME=db.drupal8.docker
+  volumes:
+    - ./mysql_data:/var/lib/mysql
+    - ./data_dumps:/data_dumps
